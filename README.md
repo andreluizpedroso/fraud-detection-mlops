@@ -1,7 +1,7 @@
 # mlops-lab — Credit Card Fraud Detection
 
 ![Sprint](https://img.shields.io/badge/Sprint-12%2F12-success)
-![CI](https://github.com/andreluizpedroso/residencia-mle-mlops/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/andreluizpedroso/fraud-detection-mlops/actions/workflows/ci.yml/badge.svg)
 ![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
 ![MLflow](https://img.shields.io/badge/MLflow-2.15-0194E2?logo=mlflow&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.111-009688?logo=fastapi&logoColor=white)
@@ -340,4 +340,4 @@ On a direct push to `main` (not on PRs), a fifth job publishes the production im
    ghcr.io/andreluizpedroso/residencia-mle-mlops-api:<commit sha>
    ```
 
-Current status: ![CI](https://github.com/andreluizpedroso/residencia-mle-mlops/actions/workflows/ci.yml/badge.svg)
+Current status: ![CI](https://github.com/andreluizpedroso/fraud-detection-mlops/actions/workflows/ci.yml/badge.svg)
