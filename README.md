@@ -21,17 +21,19 @@
 ![Pytest](https://img.shields.io/badge/pytest-8.2-0A9EDC?logo=pytest&logoColor=white)
 ![Ruff](https://img.shields.io/badge/Ruff-lint%2Fformat-D7FF64?logo=ruff&logoColor=black)
 
-Sistema end-to-end de detecção de fraude em cartão de crédito, construído durante a **Residência em Machine Learning Engineering** — um programa de 12 sprints para dominar MLOps na prática, do experimento local ao deploy em cloud.
+🇧🇷 [Leia em português](README.pt-BR.md)
+
+End-to-end credit card fraud detection system, built during the **Machine Learning Engineering Residency**, a 12-sprint program for learning MLOps hands-on, from local experiment to cloud deployment.
 
 ---
 
-## O problema
+## The problem
 
-Transações fraudulentas representam menos de **0,17%** do dataset (284.807 transações, 492 fraudes). O desafio vai além da acurácia: um falso negativo (fraude não detectada) tem custo financeiro real para o cliente e para o banco. Um falso positivo (transação legítima bloqueada) prejudica a experiência do usuário. O sistema precisa equilibrar precisão e recall com rastreabilidade completa de cada decisão.
+Fraudulent transactions make up less than **0.17%** of the dataset (284,807 transactions, 492 frauds). The challenge goes beyond accuracy: a false negative (undetected fraud) has a real financial cost for the customer and the bank. A false positive (a legitimate transaction blocked) hurts the user experience. The system must balance precision and recall while keeping every decision fully traceable.
 
 ---
 
-## Arquitetura local
+## Local architecture
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
@@ -46,15 +48,15 @@ Transações fraudulentas representam menos de **0,17%** do dataset (284.807 tra
 │                                            │                    │
 │  ┌─────────────────────────────────────────┴────────────────┐   │
 │  │              FastAPI — Fraud Detection API  :8000         │   │
-│  │  GET  /health    → status + modelo carregado             │   │
+│  │  GET  /health    → status + loaded model                 │   │
 │  │  POST /predict   → { is_fraud, fraud_probability }       │   │
-│  │  GET  /metrics   → métricas Prometheus                   │   │
+│  │  GET  /metrics   → Prometheus metrics                    │   │
 │  └────────────────────────────┬─────────────────────────────┘   │
-│                               │ scrape /metrics a cada 15s      │
+│                               │ scrape /metrics every 15s       │
 │  ┌────────────────────────────▼───────────┐                     │
 │  │         Prometheus  :9090              │                     │
-│  │  (séries temporais: latência,          │                     │
-│  │   throughput, taxa de fraude)          │                     │
+│  │  (time series: latency,                │                     │
+│  │   throughput, fraud rate)              │                     │
 │  └────────────────────────────┬───────────┘                     │
 │                               │ PromQL                          │
 │  ┌────────────────────────────▼───────────┐                     │
@@ -66,111 +68,111 @@ Transações fraudulentas representam menos de **0,17%** do dataset (284.807 tra
 
 ---
 
-## Progresso das Sprints
+## Sprint Progress
 
-| Sprint | Tema | Status |
-|--------|------|--------|
-| 1 | Setup: ambiente, scaffold, stack local (MLflow + PostgreSQL + MinIO) | ✅ Concluída |
-| 2 | Ingestão de dados, feature engineering | ✅ Concluída |
-| 3 | Treinamento + Experiment Tracking (MLflow) | ✅ Concluída |
-| 4 | Model Registry + versionamento com aliases | ✅ Concluída |
-| 5 | FastAPI serving + Docker + correção de train/serve skew | ✅ Concluída |
-| 6 | CI/CD com GitHub Actions + pytest | ✅ Concluída |
-| 7 | Observabilidade: Prometheus + Grafana | ✅ Concluída |
-| 8 | Data Drift + Model Drift (Evidently AI) | ✅ Concluída |
-| 9 | Feature Store (Feast) | ✅ Concluída |
-| 10 | Kubernetes (Kind) — deploy declarativo, HPA, health probes | ✅ Concluída |
-| 11 | Retraining automático (Airflow) — DAG semanal drift→retrain | ✅ Concluída |
-| 12 | Migração para GCP (fase cloud) — Cloud SQL, GCS, Cloud Run | ✅ Concluída |
+| Sprint | Topic | Status |
+|--------|-------|--------|
+| 1 | Setup: environment, scaffold, local stack (MLflow + PostgreSQL + MinIO) | ✅ Done |
+| 2 | Data ingestion, feature engineering | ✅ Done |
+| 3 | Training + Experiment Tracking (MLflow) | ✅ Done |
+| 4 | Model Registry + versioning with aliases | ✅ Done |
+| 5 | FastAPI serving + Docker + train/serve skew fix | ✅ Done |
+| 6 | CI/CD with GitHub Actions + pytest | ✅ Done |
+| 7 | Observability: Prometheus + Grafana | ✅ Done |
+| 8 | Data Drift + Model Drift (Evidently AI) | ✅ Done |
+| 9 | Feature Store (Feast) | ✅ Done |
+| 10 | Kubernetes (Kind): declarative deployment, HPA, health probes | ✅ Done |
+| 11 | Automated retraining (Airflow): weekly drift→retrain DAG | ✅ Done |
+| 12 | Migration to GCP (cloud phase): Cloud SQL, GCS, Cloud Run | ✅ Done |
 
-### Fase 2 — Laboratório contínuo
+### Phase 2 — Continuous lab
 
-O projeto continua como laboratório de atualização: um sprint por vez, cada um encaixando uma prática nova na stack que já roda.
+The project continues as an ongoing lab for staying current: one sprint at a time, each fitting a new practice into the stack that is already running.
 
-| Sprint | Tema | Status |
-|--------|------|--------|
-| 13 | Champion/Challenger + gradient boosting (LightGBM/XGBoost), promoção por custo de negócio | 📋 Planejada |
-| 14 | Agente de incidentes: LLM lê Prometheus + Evidently e escreve o relatório de drift | 📋 Planejada |
-| 15 | O lab como servidor MCP (consultar e agir no sistema em linguagem natural) | 📋 Planejada |
-| 16 | Evals e observabilidade de LLM (golden set, LLM-as-judge, tracing, gate no CI) | 📋 Planejada |
-| 17 | Serving em escala: shadow, canary e rollback automático no Kubernetes | 📋 Planejada |
-| 18 | Deploy real no GCP com custo controlado (opcional) | 📋 Planejada |
+| Sprint | Topic | Status |
+|--------|-------|--------|
+| 13 | Champion/Challenger + gradient boosting (LightGBM/XGBoost), promotion by business cost | 📋 Planned |
+| 14 | Incident agent: an LLM reads Prometheus + Evidently and writes the drift report | 📋 Planned |
+| 15 | The lab as an MCP server (query and act on the system in natural language) | 📋 Planned |
+| 16 | LLM evals and observability (golden set, LLM-as-judge, tracing, CI gate) | 📋 Planned |
+| 17 | Serving at scale: shadow, canary and automatic rollback on Kubernetes | 📋 Planned |
+| 18 | Real GCP deployment with controlled cost (optional) | 📋 Planned |
 
 ---
 
 ## Cloud (Sprint 12)
 
-Sprint 12 escreveu, em Terraform, o mapeamento completo da stack local para GCP — **sem provisionar nenhum recurso real** (decisão explícita para não gerar custo). Cloud SQL não tem tier "always free" permanente, diferente de Cloud Run e GCS, então o sprint inteiro ficou como exercício de arquitetura: código revisado linha a linha, `terraform apply` nunca executado.
+Sprint 12 wrote the complete mapping from the local stack to GCP in Terraform, **without provisioning any real resources** (an explicit decision to avoid costs). Cloud SQL has no permanent "always free" tier, unlike Cloud Run and GCS, so the whole sprint was kept as an architecture exercise: code reviewed line by line, `terraform apply` never executed.
 
-| Componente local | Componente GCP | Arquivo |
+| Local component | GCP component | File |
 |---|---|---|
 | `postgres` (container) | Cloud SQL | `deployment/gcp/cloud_sql.tf` |
 | `minio` (container, S3-compatible) | Cloud Storage | `deployment/gcp/gcs.tf` |
-| Containers Docker / manifests Kind (Sprint 10) | Cloud Run | `deployment/gcp/cloud_run.tf` |
+| Docker containers / Kind manifests (Sprint 10) | Cloud Run | `deployment/gcp/cloud_run.tf` |
 
-Detalhes, diagramas e trade-offs (por que Cloud Run em vez de reaproveitar os manifests do Sprint 10 num GKE) em [`docs/sprints/sprint-12.md`](docs/sprints/sprint-12.md).
+Details, diagrams and trade-offs (why Cloud Run instead of reusing the Sprint 10 manifests on GKE) in [`docs/sprints/sprint-12.md`](docs/sprints/sprint-12.md).
 
 ---
 
-## Início rápido
+## Quick start
 
-### Pré-requisitos
+### Prerequisites
 
 - Docker + Docker Compose
-- [uv](https://docs.astral.sh/uv/getting-started/installation/) instalado
+- [uv](https://docs.astral.sh/uv/getting-started/installation/) installed
 
-### 1. Configurar ambiente
+### 1. Set up the environment
 
 ```bash
 cp .env.example .env
 uv sync --extra dev
 ```
 
-### 2. Subir a stack completa
+### 2. Bring up the full stack
 
 ```bash
 docker compose -f docker/docker-compose.yml up -d
 ```
 
-### 3. Baixar o dataset
+### 3. Download the dataset
 
 ```bash
-# Requer conta no Kaggle e ~/.kaggle/kaggle.json configurado
+# Requires a Kaggle account and ~/.kaggle/kaggle.json configured
 uv run python pipelines/download_data.py
 ```
 
-### 4. Executar o pipeline completo
+### 4. Run the full pipeline
 
 ```bash
 # Feature engineering
 uv run python pipelines/feature_engineering.py
 
-# Treinamento + tracking no MLflow
+# Training + MLflow tracking
 uv run python pipelines/train.py
 
-# Registrar e promover o melhor modelo
+# Register and promote the best model
 uv run python pipelines/register_model.py
 ```
 
 ---
 
-## Interfaces disponíveis
+## Available interfaces
 
-| Interface | URL | Descrição |
-|-----------|-----|-----------|
-| MLflow UI | http://localhost:5000 | Experimentos, runs, métricas, Model Registry |
-| MinIO Console | http://localhost:9001 | Artefatos: modelos, plots, arquivos |
-| MinIO API (S3) | http://localhost:9000 | Endpoint S3-compatível usado pelo MLflow |
-| API docs (Swagger) | http://localhost:8000/docs | Endpoints interativos com exemplo de payload |
-| API Métricas | http://localhost:8000/metrics | Endpoint Prometheus (latência, throughput, fraude) |
-| Prometheus | http://localhost:9090 | Banco de séries temporais — queries PromQL |
-| Grafana | http://localhost:3000 | Dashboards operacionais e de negócio (`admin` / `admin`) |
-| API via Kubernetes | http://localhost:8080 | Mesma API servida pelo cluster Kind (Sprint 10) |
-| Airflow UI | http://localhost:8081 | DAGs, execuções e logs (`admin` / `admin`) (Sprint 11) |
+| Interface | URL | Description |
+|-----------|-----|-------------|
+| MLflow UI | http://localhost:5000 | Experiments, runs, metrics, Model Registry |
+| MinIO Console | http://localhost:9001 | Artifacts: models, plots, files |
+| MinIO API (S3) | http://localhost:9000 | S3-compatible endpoint used by MLflow |
+| API docs (Swagger) | http://localhost:8000/docs | Interactive endpoints with example payloads |
+| API Metrics | http://localhost:8000/metrics | Prometheus endpoint (latency, throughput, fraud) |
+| Prometheus | http://localhost:9090 | Time-series database — PromQL queries |
+| Grafana | http://localhost:3000 | Operational and business dashboards (`admin` / `admin`) |
+| API via Kubernetes | http://localhost:8080 | Same API served by the Kind cluster (Sprint 10) |
+| Airflow UI | http://localhost:8081 | DAGs, runs and logs (`admin` / `admin`) (Sprint 11) |
 
 ---
 
-## API de detecção de fraude
+## Fraud detection API
 
 ### `GET /health`
 
@@ -180,7 +182,7 @@ uv run python pipelines/register_model.py
 
 ### `POST /predict`
 
-**Request:** transação com features `V1`–`V28` (componentes PCA) + `Amount` em valor bruto.
+**Request:** a transaction with features `V1`–`V28` (PCA components) + `Amount` as a raw value.
 
 ```bash
 curl -X POST http://localhost:8000/predict \
@@ -194,148 +196,148 @@ curl -X POST http://localhost:8000/predict \
 { "is_fraud": false, "fraud_probability": 0.0012, "model_alias": "champion" }
 ```
 
-O modelo carregado é sempre o `fraud-detector@champion` do MLflow Model Registry. Para trocar o modelo em produção, basta mover o alias — sem redeploy de código.
+The loaded model is always `fraud-detector@champion` from the MLflow Model Registry. To swap the production model, just move the alias — no code redeploy.
 
 ---
 
-## Observabilidade
+## Observability
 
-O dashboard **Fraud Detection API** no Grafana (`Dashboards → MLOps`) exibe:
+The **Fraud Detection API** dashboard in Grafana (`Dashboards → MLOps`) shows:
 
-| Painel | O que mede |
-|--------|------------|
-| Requisições / segundo | Taxa de chegada de tráfego |
-| Taxa de Erros 5xx | Proporção de respostas com erro de servidor |
-| Taxa de Fraude Detectada | % de transações classificadas como fraude (métrica de negócio) |
-| Latência p50 / p90 / p99 | Distribuição de tempo de resposta — p99 = pior caso do 1% mais lento |
-| Requisições por endpoint | Volume separado por rota e status HTTP |
-| Fraude vs Legítima | Tendência temporal das duas categorias de predição |
+| Panel | What it measures |
+|-------|------------------|
+| Requests / second | Incoming traffic rate |
+| 5xx Error Rate | Share of responses with a server error |
+| Detected Fraud Rate | % of transactions classified as fraud (business metric) |
+| Latency p50 / p90 / p99 | Response time distribution — p99 = worst case of the slowest 1% |
+| Requests per endpoint | Volume split by route and HTTP status |
+| Fraud vs Legitimate | Time trend of the two prediction classes |
 
 ---
 
-## Comandos
+## Commands
 
 ```bash
-# Infraestrutura
-make up           # Sobe a stack completa (MLflow + MinIO + API + Prometheus + Grafana)
-make down         # Para os containers
-make logs         # Acompanha logs em tempo real
-make ps           # Status dos containers
+# Infrastructure
+make up           # Brings up the full stack (MLflow + MinIO + API + Prometheus + Grafana)
+make down         # Stops the containers
+make logs         # Follows logs in real time
+make ps           # Container status
 
-# Qualidade de código
+# Code quality
 make lint         # ruff check
 make format       # ruff format
 make check        # lint + mypy
 
-# Testes
+# Tests
 make test         # pytest
-make test-cov     # pytest com relatório de cobertura
+make test-cov     # pytest with coverage report
 
 # Setup
 make install      # uv sync --extra dev
-make env          # cria .env a partir do .env.example
-make help         # lista todos os comandos
+make env          # creates .env from .env.example
+make help         # lists all commands
 
 # Kubernetes (Kind) — Sprint 10
-make k8s-create   # cria cluster Kind local
-make k8s-deploy   # build + load imagem + aplica manifests
-make k8s-status   # status dos pods/svc/hpa
-make k8s-delete   # remove o cluster
+make k8s-create   # creates a local Kind cluster
+make k8s-deploy   # build + load image + apply manifests
+make k8s-status   # pod/svc/hpa status
+make k8s-delete   # removes the cluster
 
 # Airflow — Sprint 11
-make airflow-up   # sobe webserver + scheduler + postgres
-make airflow-down # para o Airflow
+make airflow-up   # brings up webserver + scheduler + postgres
+make airflow-down # stops Airflow
 ```
 
 ---
 
-## Estrutura do projeto
+## Project structure
 
 ```
 mlops-lab/
 ├── app/                        # FastAPI — model serving
 │   ├── main.py                 #   lifespan, /health, /predict, /metrics
-│   └── schemas.py              #   contratos Pydantic (Transaction, PredictionResponse)
-├── pipelines/                  # Scripts standalone
-│   ├── download_data.py        #   ingestão do dataset (Kaggle)
-│   ├── feature_engineering.py  #   pré-processamento + split 80/20
-│   ├── train.py                #   treinamento com sklearn Pipeline + MLflow tracking
-│   ├── register_model.py       #   registro e promoção no Model Registry
-│   ├── detect_drift.py         #   detecção de data drift com Evidently AI (Sprint 8)
-│   └── materialize_features.py #   materialização de features no Feast (Sprint 9)
-├── monitoring/                 # Observabilidade
-│   ├── prometheus.yml          #   config de scrape (job: fraud-api → :8000/metrics)
+│   └── schemas.py              #   Pydantic contracts (Transaction, PredictionResponse)
+├── pipelines/                  # Standalone scripts
+│   ├── download_data.py        #   dataset ingestion (Kaggle)
+│   ├── feature_engineering.py  #   preprocessing + 80/20 split
+│   ├── train.py                #   training with sklearn Pipeline + MLflow tracking
+│   ├── register_model.py       #   registration and promotion in the Model Registry
+│   ├── detect_drift.py         #   data drift detection with Evidently AI (Sprint 8)
+│   └── materialize_features.py #   feature materialization in Feast (Sprint 9)
+├── monitoring/                 # Observability
+│   ├── prometheus.yml          #   scrape config (job: fraud-api → :8000/metrics)
 │   └── grafana/
-│       ├── provisioning/       #   datasource + dashboard provider (auto-carregados)
-│       └── dashboards/         #   fraud_api.json — 6 painéis PromQL
+│       ├── provisioning/       #   datasource + dashboard provider (auto-loaded)
+│       └── dashboards/         #   fraud_api.json — 6 PromQL panels
 ├── tests/                      # pytest
 │   ├── conftest.py             #   fixtures: FakeModel, api_client, fraud_api_client
-│   ├── test_smoke.py           #   imports e versões mínimas
-│   ├── test_api.py             #   testes de /health e /predict (sem MLflow real)
-│   ├── test_drift.py           #   testes de detecção de drift (Sprint 8)
-│   └── test_features.py        #   testes de materialização Feast (Sprint 9)
-├── docker/                     # Containerização
-│   ├── docker-compose.yml      #   stack principal: postgres+minio+mlflow+api+prometheus+grafana
-│   ├── docker-compose-airflow.yml  # stack Airflow separada (Sprint 11)
-│   ├── Dockerfile.mlflow       #   imagem customizada do MLflow
-│   └── Dockerfile.api          #   imagem da FastAPI (uv sync --frozen)
+│   ├── test_smoke.py           #   imports and minimum versions
+│   ├── test_api.py             #   /health and /predict tests (no real MLflow)
+│   ├── test_drift.py           #   drift detection tests (Sprint 8)
+│   └── test_features.py        #   Feast materialization tests (Sprint 9)
+├── docker/                     # Containerization
+│   ├── docker-compose.yml      #   main stack: postgres+minio+mlflow+api+prometheus+grafana
+│   ├── docker-compose-airflow.yml  # separate Airflow stack (Sprint 11)
+│   ├── Dockerfile.mlflow       #   custom MLflow image
+│   └── Dockerfile.api          #   FastAPI image (uv sync --frozen)
 ├── feature_store/              # Feature Store (Feast) — Sprint 9
-│   ├── feature_store.yaml      #   config do projeto (offline=Parquet, online=SQLite)
-│   └── features.py             #   entidade + FeatureView (V1-V28, Amount)
+│   ├── feature_store.yaml      #   project config (offline=Parquet, online=SQLite)
+│   └── features.py             #   entity + FeatureView (V1-V28, Amount)
 ├── deployment/                 # Kubernetes (Sprint 10)
-│   ├── kind-cluster.yaml       #   cluster Kind com port-mapping :30800→:8080
+│   ├── kind-cluster.yaml       #   Kind cluster with port mapping :30800→:8080
 │   └── k8s/                    #   manifests: namespace, configmap, secret, deploy, svc, hpa
 ├── airflow/                    # Apache Airflow (Sprint 11)
 │   └── dags/
-│       └── fraud_retraining_dag.py  # DAG semanal: drift→branch→retrain→register
-├── deployment/gcp/              # Terraform GCP (Sprint 12) — IaC conceitual, nunca aplicado
+│       └── fraud_retraining_dag.py  # weekly DAG: drift→branch→retrain→register
+├── deployment/gcp/              # Terraform GCP (Sprint 12) — conceptual IaC, never applied
 │   ├── cloud_sql.tf             #   Postgres → Cloud SQL
 │   ├── gcs.tf                   #   MinIO → Cloud Storage
 │   └── cloud_run.tf             #   containers/Kind → Cloud Run
-├── docs/sprints/               # Documentação por sprint
-│   └── sprint-01.md … sprint-18.md   # 13–18: fase 2, planejadas
+├── docs/sprints/               # Per-sprint documentation
+│   └── sprint-01.md … sprint-18.md   # 13–18: phase 2, planned
 ├── .github/workflows/
-│   └── ci.yml                  # CI: lint + mypy + pytest + docker build; CD: push da imagem pro GHCR (main)
-├── data/                       # Dados gerados em runtime (gitignored)
-├── pyproject.toml              # Dependências + config de ferramentas
-├── uv.lock                     # Lockfile reproduzível
-├── Makefile                    # Atalhos de dev
-└── .env.example                # Template de variáveis de ambiente
+│   └── ci.yml                  # CI: lint + mypy + pytest + docker build; CD: image push to GHCR (main)
+├── data/                       # Data generated at runtime (gitignored)
+├── pyproject.toml              # Dependencies + tool config
+├── uv.lock                     # Reproducible lockfile
+├── Makefile                    # Dev shortcuts
+└── .env.example                # Environment variables template
 ```
 
 ---
 
-## Modelo em produção
+## Production model
 
-| Campo | Valor |
+| Field | Value |
 |-------|-------|
-| Nome | `fraud-detector` |
-| Versão atual | 2 |
-| Algoritmo | `sklearn.Pipeline` (StandardScaler + RandomForestClassifier) |
+| Name | `fraud-detector` |
+| Current version | 2 |
+| Algorithm | `sklearn.Pipeline` (StandardScaler + RandomForestClassifier) |
 | PR-AUC | 0.8681 |
-| Recall (fraudes) | 80.6% |
-| Precision (fraudes) | 91.9% |
+| Recall (fraud) | 80.6% |
+| Precision (fraud) | 91.9% |
 | Alias | `@champion` |
 
-O modelo é um `Pipeline` autocontido: recebe `Amount` em valor bruto e escala internamente, eliminando o risco de train/serve skew.
+The model is a self-contained `Pipeline`: it takes `Amount` as a raw value and scales it internally, removing the risk of train/serve skew.
 
 ---
 
 ## CI/CD
 
-Todo push e PR na `main` dispara automaticamente:
+Every push and PR to `main` automatically triggers:
 
 1. **Lint** — `ruff check`
 2. **Type check** — `mypy app pipelines`
-3. **Testes** — `pytest --cov` (8 testes, ~4s, sem infraestrutura externa)
-4. **Docker build** — valida que `Dockerfile.api` compila sem erros
+3. **Tests** — `pytest --cov` (8 tests, ~4s, no external infrastructure)
+4. **Docker build** — verifies that `Dockerfile.api` builds without errors
 
-Em push direto para `main` (não em PRs), um quinto job publica a imagem em produção:
+On a direct push to `main` (not on PRs), a fifth job publishes the production image:
 
-5. **Docker publish** — build + push para o GitHub Container Registry, sem depender de conta cloud nem gerar custo:
+5. **Docker publish** — build + push to the GitHub Container Registry, with no cloud account required and no cost:
    ```
    ghcr.io/andreluizpedroso/residencia-mle-mlops-api:latest
-   ghcr.io/andreluizpedroso/residencia-mle-mlops-api:<sha do commit>
+   ghcr.io/andreluizpedroso/residencia-mle-mlops-api:<commit sha>
    ```
 
-Status atual: ![CI](https://github.com/andreluizpedroso/residencia-mle-mlops/actions/workflows/ci.yml/badge.svg)
+Current status: ![CI](https://github.com/andreluizpedroso/residencia-mle-mlops/actions/workflows/ci.yml/badge.svg)
