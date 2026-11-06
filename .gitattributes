@@ -7,3 +7,6 @@
 *.pkl binary
 *.joblib binary
 *.parquet binary
+
+# Count notebooks out of the language stats so the repo shows as Python
+*.ipynb linguist-vendored
